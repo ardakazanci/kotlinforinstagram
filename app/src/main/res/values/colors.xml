@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FAFAFA</color>
+    <color name="colorPrimary">#000</color>
+    <color name="colorToolbar">#FAFAFA</color>
     <color name="colorPrimaryDark">#F0F0F0</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorToolbarBottomLine">#dbdbdb</color>
+
+
 </resources>

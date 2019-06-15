@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Main Screen Button -->
+    <item
+        android:id="@+id/menu_tab_home"
+        android:icon="@drawable/ic_tab_home"
+        android:title=""
+    />
+    <!-- Search Button -->
+    <item
+        android:id="@+id/menu_tab_search"
+        android:icon="@drawable/ic_tab_search"
+        android:title=""
+    />
+    <!-- Content Add - Share  Button -->
+    <item
+        android:id="@+id/menu_tab_share"
+        android:icon="@drawable/ic_tab_content_add"
+        android:title=""
+    />
+    <!-- Likes/News Button -->
+    <item
+        android:id="@+id/menu_tab_news"
+        android:icon="@drawable/ic_tab_likes"
+        android:title=""
+    />
+
+    <!-- Profile Screen Button -->
+    <item
+        android:id="@+id/menu_tab_profile"
+        android:icon="@drawable/ic_tab_profile"
+        android:title=""
+    />
+
+
+</menu>

@@ -13,6 +13,7 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
+            android:background="@color/colorToolbar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -110,13 +111,17 @@
               app:layout_constraintStart_toStartOf="parent"/>
 
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView android:layout_width="match_parent"
-                                                                           android:layout_height="50dp"
-                                                                           app:layout_constraintBottom_toBottomOf="parent"
-                                                                           app:layout_constraintStart_toStartOf="parent"
-                                                                           app:layout_constraintEnd_toEndOf="parent"
-                                                                           android:id="@+id/bottomnavigationview_main"
-                                                                           app:layout_constraintTop_toBottomOf="@+id/viewpager_main"></com.google.android.material.bottomnavigation.BottomNavigationView>
+        <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+            android:id="@+id/bottomnavigationview_main"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:menu="@menu/menu_bottom_navigation"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toBottomOf="@+id/viewpager_main">
+
+
+        </com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
