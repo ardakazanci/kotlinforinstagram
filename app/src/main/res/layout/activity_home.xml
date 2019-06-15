@@ -93,6 +93,7 @@
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         </com.google.android.material.appbar.AppBarLayout>
+
         <androidx.viewpager.widget.ViewPager
             android:layout_width="0dp"
             android:layout_height="0dp"

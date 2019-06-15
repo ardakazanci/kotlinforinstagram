@@ -9,18 +9,14 @@
 package com.ardakazanci.instagramkotlin.home
 
 
-
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.ardakazanci.instagramkotlin.R
 import com.ardakazanci.instagramkotlin.utils.BottomNavigationViewHelper
+import com.ardakazanci.instagramkotlin.utils.HomeViewPagerAdapter
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
-
-
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,8 +24,26 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         setupBottomNavigationView()
+        setupHomeViewPager()
 
     }
+
+    /**
+     * HomeActivity içerisinde yer alan ViewPager işlemleri
+     */
+    private fun setupHomeViewPager() {
+        val homeViewPagerAdapter = HomeViewPagerAdapter(supportFragmentManager)
+        // Sırasıyla gösterilecek Fragmentlar
+        homeViewPagerAdapter.addHomeFragment(CameraFragment()) // id 0
+        homeViewPagerAdapter.addHomeFragment(HomeFragment())  // id 1
+        homeViewPagerAdapter.addHomeFragment(MessagesFragment()) // id 2
+
+        // ViewPager 'ı adapter ü ile bağlıyoruz.
+        viewpager_main.adapter = homeViewPagerAdapter
+
+        viewpager_main.setCurrentItem(1) // .currentItem = 1 // setCurrentItem(1)
+    }
+
 
     fun setupBottomNavigationView() {
         BottomNavigationViewHelper.setupBottomNavigationView(bottomnavigationview_main)
@@ -37,9 +51,8 @@ class HomeActivity : AppCompatActivity() {
 
         val menu = bottomnavigationview_main.menu
         val menuItem = menu.getItem(ACTIVITY_NO)
-        menuItem.setChecked(true)
+        menuItem.isChecked = true
     }
-
 
 
     /**

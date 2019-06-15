@@ -54,13 +54,13 @@ class BottomNavigationViewHelper {
                         R.id.menu_tab_home -> {
 
 
-                            val intent = Intent(context, HomeActivity::class.java)
+                            val intent = Intent(context, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                             context.startActivity(intent)
                             return true
                         }
 
                         R.id.menu_tab_news -> {
-                            val intent = Intent(context, NewsActivity::class.java)
+                            val intent = Intent(context, NewsActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                             context.startActivity(intent)
                             return true
 
@@ -68,21 +68,21 @@ class BottomNavigationViewHelper {
 
                         R.id.menu_tab_profile -> {
 
-                            val intent = Intent(context, ProfileActivity::class.java)
+                            val intent = Intent(context, ProfileActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                             context.startActivity(intent)
                             return true
                         }
 
                         R.id.menu_tab_search -> {
 
-                            val intent = Intent(context, SearchActivity::class.java)
+                            val intent = Intent(context, SearchActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                             context.startActivity(intent)
                             return true
                         }
 
                         R.id.menu_tab_share -> {
 
-                            val intent = Intent(context, ShareActivity::class.java)
+                            val intent = Intent(context, ShareActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                             context.startActivity(intent)
                             return true
                         }
