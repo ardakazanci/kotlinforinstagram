@@ -8,27 +8,44 @@
 
 package com.ardakazanci.instagramkotlin.profile
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.ardakazanci.instagramkotlin.R
 import com.ardakazanci.instagramkotlin.utils.BottomNavigationViewHelper
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.activity_profile.*
 
 class ProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        setContentView(R.layout.activity_profile)
 
+
+        setupToolbar()
         setupBottomNavigationView()
+
+
+    }
+
+    private fun setupToolbar() {
+
+        imageview_profile_options.setOnClickListener {
+            val intent = Intent(
+                this@ProfileActivity,
+                ProfileSettingsActivity::class.java
+            ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            startActivity(intent)
+        }
 
     }
 
     fun setupBottomNavigationView() {
-        BottomNavigationViewHelper.setupBottomNavigationView(bottomnavigationview_main)
-        BottomNavigationViewHelper.setupBottomNavigationViewClicked(this@ProfileActivity, bottomnavigationview_main)
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomnavigationview_profile)
+        BottomNavigationViewHelper.setupBottomNavigationViewClicked(this@ProfileActivity, bottomnavigationview_profile)
 
-        val menu = bottomnavigationview_main.menu
+        val menu = bottomnavigationview_profile.menu
         val menuItem = menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)
     }

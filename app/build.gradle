@@ -40,5 +40,8 @@ dependencies {
     // BottomNavigationView
     implementation "com.github.ittianyu:BottomNavigationViewEx:$bottomnavigationviewex"
 
+    // CircleImageView
+    implementation "de.hdodenhof:circleimageview:$circleimageview"
+
 
 }

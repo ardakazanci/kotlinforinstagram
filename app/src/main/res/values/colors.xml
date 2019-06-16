@@ -7,4 +7,8 @@
     <color name="colorToolbarBottomLine">#dbdbdb</color>
 
 
+    <color name="siyah">#000</color>
+    <color name="beyaz">#FFF</color>
+
+
 </resources>

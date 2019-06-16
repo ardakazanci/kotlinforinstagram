@@ -38,7 +38,7 @@ class ShareActivity : AppCompatActivity() {
      * Sabitler
      */
     companion object {
-        const val TAG = "HomeActivity"
+        const val TAG = "ShareActivity"
 
         /**
          * Seçili menünün iconunun seçili olmasını sağlamak için sabit.

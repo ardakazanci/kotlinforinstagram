@@ -39,7 +39,7 @@ class SearchActivity : AppCompatActivity() {
      * Sabitler
      */
     companion object {
-        const val TAG = "HomeActivity"
+        const val TAG = "SearchActivity"
 
         /**
          * Seçili menünün iconunun seçili olmasını sağlamak için sabit.
