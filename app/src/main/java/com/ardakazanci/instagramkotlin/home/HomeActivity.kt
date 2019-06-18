@@ -14,6 +14,8 @@ import android.os.Bundle
 import com.ardakazanci.instagramkotlin.R
 import com.ardakazanci.instagramkotlin.utils.BottomNavigationViewHelper
 import com.ardakazanci.instagramkotlin.utils.HomeViewPagerAdapter
+import com.ardakazanci.instagramkotlin.utils.UniversalImageLoader
+import com.nostra13.universalimageloader.core.ImageLoader
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
@@ -23,6 +25,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        initUniversalImageLoader()
         setupBottomNavigationView()
         setupHomeViewPager()
 
@@ -53,6 +56,20 @@ class HomeActivity : AppCompatActivity() {
         val menuItem = menu.getItem(ACTIVITY_NO)
         menuItem.isChecked = true
     }
+
+
+    /**
+     * UniversalImageLoader 'ı 1 kere tetiklememiz gerekiyor.
+     * Launcher activity(HomeActivity) de bir kere çağırmamız yeterli oldu.
+     * Context: this
+     */
+    private fun initUniversalImageLoader() {
+        // Fragment içerisinde olduğumuz için context bağlı olduğu activtiy i gönderebiliriz.
+        val universalImageLoader = UniversalImageLoader(this@HomeActivity)
+        ImageLoader.getInstance().init(universalImageLoader.config)
+
+    }
+
 
 
     /**

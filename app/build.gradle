@@ -48,5 +48,4 @@ dependencies {
     implementation "com.nostra13.universalimageloader:universal-image-loader:$universalimageloader"
 
 
-
 }

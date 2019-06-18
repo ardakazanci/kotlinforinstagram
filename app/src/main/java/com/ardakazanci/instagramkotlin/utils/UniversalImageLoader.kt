@@ -51,7 +51,7 @@ class UniversalImageLoader(val context: Context) {
 
         private val defaultImage = R.drawable.ic_tab_profile
 
-        fun setImage(imageUrl: String, imageView: ImageView, mProgressBar: ProgressBar?, ilkKisim: String) {
+        fun setImage(imageUrl: String, imageView: ImageView, mProgressBar: ProgressBar?, ilkKisim: String?) {
 
 
             val imageLoader = ImageLoader.getInstance()

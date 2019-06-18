@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.view.View
 import com.ardakazanci.instagramkotlin.R
 import com.ardakazanci.instagramkotlin.utils.BottomNavigationViewHelper
+import com.ardakazanci.instagramkotlin.utils.UniversalImageLoader
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_profile.*
 
@@ -26,7 +27,18 @@ class ProfileActivity : AppCompatActivity() {
 
         setupToolbar()
         setupBottomNavigationView()
+        setupProfilePicture()
 
+
+    }
+
+    /**
+     * Profil resmi eklenmektedir.
+     */
+    private fun setupProfilePicture() {
+
+        val pictureUrl = "photo.isu.pub/ardakazanci/photo_large.jpg"
+        UniversalImageLoader.setImage(pictureUrl,circleimageview_profile,progressbar_profile_picture,"http://")
 
     }
 
@@ -43,7 +55,7 @@ class ProfileActivity : AppCompatActivity() {
         textview_profiledit.setOnClickListener {
 
             constraint_profilelayout_root.visibility = View.GONE
-            var transaction = supportFragmentManager.beginTransaction()
+            val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.framelayout_profilelayout_root,ProfileEditFragment())
             transaction.addToBackStack("editProfileFragmentEklendi")
             transaction.commit()

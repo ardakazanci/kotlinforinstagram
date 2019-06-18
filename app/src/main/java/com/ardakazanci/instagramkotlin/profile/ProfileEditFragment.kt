@@ -37,7 +37,7 @@ class ProfileEditFragment : Fragment() {
 
         circleProfilePictureImageView = v.findViewById(R.id.circleProfileImage)
 
-        initUniversalImageLoader()
+
         setupProfilePicture()
 
 
@@ -51,12 +51,6 @@ class ProfileEditFragment : Fragment() {
         return v
     }
 
-    private fun initUniversalImageLoader() {
-        // Fragment içerisinde olduğumuz için context bağlı olduğu activtiy i gönderebiliriz.
-        var universalImageLoader = UniversalImageLoader(activity!!.applicationContext)
-        ImageLoader.getInstance().init(universalImageLoader.config)
-
-    }
 
 
     private fun setupProfilePicture() {
