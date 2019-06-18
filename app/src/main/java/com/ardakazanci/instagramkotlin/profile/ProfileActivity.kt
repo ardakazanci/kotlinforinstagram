@@ -11,6 +11,7 @@ package com.ardakazanci.instagramkotlin.profile
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.ardakazanci.instagramkotlin.R
 import com.ardakazanci.instagramkotlin.utils.BottomNavigationViewHelper
 import kotlinx.android.synthetic.main.activity_home.*
@@ -39,6 +40,22 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        textview_profiledit.setOnClickListener {
+
+            constraint_profilelayout_root.visibility = View.GONE
+            var transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.framelayout_profilelayout_root,ProfileEditFragment())
+            transaction.addToBackStack("editProfileFragmentEklendi")
+            transaction.commit()
+
+        }
+
+    }
+
+
+    override fun onBackPressed() {
+        constraint_profilelayout_root.visibility = View.VISIBLE
+        super.onBackPressed()
     }
 
     fun setupBottomNavigationView() {

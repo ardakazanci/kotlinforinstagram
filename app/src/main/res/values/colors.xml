@@ -3,12 +3,13 @@
     <color name="colorPrimary">#000</color>
     <color name="colorToolbar">#FAFAFA</color>
     <color name="colorPrimaryDark">#F0F0F0</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">@android:color/darker_gray</color>
     <color name="colorToolbarBottomLine">#dbdbdb</color>
 
 
     <color name="siyah">#000</color>
     <color name="beyaz">#FFF</color>
+    <color name="mavi">#1591E5</color>
 
 
 </resources>

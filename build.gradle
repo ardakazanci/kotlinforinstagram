@@ -12,6 +12,7 @@ buildscript {
     ext.material="1.0.0"
     ext.bottomnavigationviewex = "2.0.2"
     ext.circleimageview = "3.0.0"
+    ext.universalimageloader = "1.9.5"
 
 
 
