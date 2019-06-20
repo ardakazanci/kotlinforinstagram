@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit
 class TelephoneRegisterFragment : Fragment() {
 
     // Fiziksel cihaz olması gerekiyor.
+    // NŞA da bir fragment tetiklendiği için Fragment Sınıfında ele alındı.
 
 
     var gelenTelefonNumara = ""

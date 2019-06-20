@@ -18,6 +18,7 @@ buildscript {
     ext.gradleversion = "3.4.1"
     ext.firebasecore = "16.0.9"
     ext.firebaseauth = "18.0.0"
+    ext.firebasedatabase = "17.0.0"
 
 
 

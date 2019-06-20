@@ -148,16 +148,21 @@ class RegisterActivity : AppCompatActivity() {
 
             } else {
 
-                //Log.e("RegisterActivity","E-Posta İleri tıklandı")
+                //Log.e("RegisterActivity","E-Posta menüsü İleri tıklandı")
 
-                constraint_login_root.visibility = View.GONE
-                framelayout_login_root.visibility = View.VISIBLE
+                if(isValidEmailControl(edittext_register_type.text.toString())){
+                    constraint_login_root.visibility = View.GONE
+                    framelayout_login_root.visibility = View.VISIBLE
+                    val fragmentTransaction = supportFragmentManager.beginTransaction()
+                    fragmentTransaction.replace(R.id.framelayout_login_root, EmailRegisterFragment())
+                    fragmentTransaction.addToBackStack("EmailRegisterFragmentEklendi")
+                    fragmentTransaction.commit()
+                    EventBus.getDefault().postSticky(EventBusDataEvents.EmailGonder(edittext_register_type.text.toString()))
+                }else{
+                    Toast.makeText(this@RegisterActivity,"Geçerli e-mail adresi giriniz.",Toast.LENGTH_LONG).show()
+                }
 
-                val fragmentTransaction = supportFragmentManager.beginTransaction()
-                fragmentTransaction.replace(R.id.framelayout_login_root, EmailRegisterFragment())
-                fragmentTransaction.addToBackStack("EmailRegisterFragmentEklendi")
-                fragmentTransaction.commit()
-                EventBus.getDefault().postSticky(EventBusDataEvents.EmailGonder(edittext_register_type.text.toString()))
+
 
             }
 
@@ -173,6 +178,17 @@ class RegisterActivity : AppCompatActivity() {
 
         constraint_login_root.visibility = View.VISIBLE
         super.onBackPressed()
+    }
+
+
+    fun isValidEmailControl(kontrolEdilecekEmail:String) : Boolean {
+
+        if(kontrolEdilecekEmail == null){
+            return false
+        }
+
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(kontrolEdilecekEmail).matches()
+
     }
 
 

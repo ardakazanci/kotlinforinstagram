@@ -95,6 +95,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edittext_kayit_kullaniciadi" />
 
     <View
+
         android:id="@+id/golgelik1"
         android:layout_width="0dp"
         android:layout_height="2dp"
