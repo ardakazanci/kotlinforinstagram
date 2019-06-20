@@ -58,6 +58,11 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:$firebaseauth"
     implementation "com.google.firebase:firebase-database:$firebasedatabase"
 
+    // Anko
+    implementation "org.jetbrains.anko:anko-commons:$anko_ver"
+    implementation "org.jetbrains.anko:anko-design:$anko_ver" // For SnackBars
+
+
 
 }
 

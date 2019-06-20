@@ -8,23 +8,32 @@
 
 package com.ardakazanci.instagramkotlin.model
 
-class User{
+class User {
 
-    var userUID :String?= null
-    var userEmail:String?=null
-    var userPassword:String?=null
-    var userUserName:String?=null
-    var userPersonelName:String?=null
+    var userUID: String? = null
+    var userEmail: String? = null
+    var userPassword: String? = null
+    var userUserName: String? = null
+    var userPersonelName: String? = null
+    var userPhoneNumber: String? = null
 
-    constructor(){}
+    constructor() {}
 
 
-
-    constructor(userUID:String?,userEmail: String?, userPassword: String?, userUserName: String?, userPersonelName: String?) {
+    constructor(
+            userPhoneNumber: String?,
+            userUID: String?,
+            userEmail: String?,
+            userPassword: String?,
+            userUserName: String?,
+            userPersonelName: String?
+    ) {
         this.userEmail = userEmail
         this.userPassword = userPassword
         this.userUserName = userUserName
         this.userPersonelName = userPersonelName
+        this.userUID = userUID
+        this.userPhoneNumber = userPhoneNumber
     }
 
 
