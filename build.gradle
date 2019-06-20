@@ -13,6 +13,12 @@ buildscript {
     ext.bottomnavigationviewex = "2.0.2"
     ext.circleimageview = "3.0.0"
     ext.universalimageloader = "1.9.5"
+    ext.eventbus = "3.1.1"
+    ext.googleservices = "4.2.0"
+    ext.gradleversion = "3.4.1"
+    ext.firebasecore = "16.0.9"
+    ext.firebaseauth = "18.0.0"
+
 
 
 
@@ -24,8 +30,9 @@ buildscript {
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath "com.android.tools.build:gradle:$gradleversion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.gms:google-services:$googleservices"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

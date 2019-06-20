@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
@@ -47,5 +48,21 @@ dependencies {
     // Universal Image Loader
     implementation "com.nostra13.universalimageloader:universal-image-loader:$universalimageloader"
 
+    // Greenrobot Eventbus
+    implementation "org.greenrobot:eventbus:$eventbus"
+
+
+    // Firebase
+    implementation "com.google.firebase:firebase-core:$firebasecore"
+    implementation "com.google.firebase:firebase-auth:$firebaseauth"
+
+
+
+
+
+
 
 }
+
+
+apply plugin: 'com.google.gms.google-services'
