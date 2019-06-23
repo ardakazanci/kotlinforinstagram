@@ -20,6 +20,7 @@ A project I use to improve myself
 * Custom Recyclerview 
 * Commented 
 * Realtime Cloud Messaging & Notifications
+* ...
 
 # Requirements
 
