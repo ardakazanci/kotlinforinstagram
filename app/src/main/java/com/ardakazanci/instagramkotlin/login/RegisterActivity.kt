@@ -8,6 +8,7 @@
 
 package com.ardakazanci.instagramkotlin.login
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -16,28 +17,40 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
 import com.ardakazanci.instagramkotlin.R
+import com.ardakazanci.instagramkotlin.model.User
 import com.ardakazanci.instagramkotlin.utils.EventBusDataEvents
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_register.*
 import org.greenrobot.eventbus.EventBus
+import org.jetbrains.anko.toast
 
 class RegisterActivity : AppCompatActivity() {
 
 
-
+    lateinit var mRef: DatabaseReference
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
+        mRef = FirebaseDatabase.getInstance().reference
 
         init()
 
     }
 
     private fun init() {
+
+
+        textview_login.setOnClickListener {
+
+            val intent =
+                Intent(this@RegisterActivity, LoginActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            startActivity(intent)
+
+        }
 
 
         textview_eposta.setOnClickListener {
@@ -49,18 +62,21 @@ class RegisterActivity : AppCompatActivity() {
             edittext_register_type.hint = "E-Posta"
 
 
-            // Aralarında yapılacak geçilerde görünüm sıfırlama işlemi
+            // Aralarında yapılacak geçişlerde görünüm sıfırlama işlemi
 
             btn_next.isEnabled = false
             btn_next.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.colorSonukMavi))
-            //btn_next.setBackgroundColor(ContextCompat.getColor(this@RegisterActivity, R.color.beyaz))
             btn_next.setBackgroundResource(R.drawable.button_register)
 
 
         }
 
 
-        /*textview_telefon.setOnClickListener {
+        /*
+
+            TELEFON TAB MENÜSÜ PASİF HALE GETİRİLDİ. DAHA SONRA FİZİKSEL CİHAZ KULLANIMINDA ELE ALINACAKTIR.
+
+           textview_telefon.setOnClickListener {
 
             view_telefon.visibility = View.VISIBLE
             view_eposta.visibility = View.INVISIBLE
@@ -78,7 +94,12 @@ class RegisterActivity : AppCompatActivity() {
 
         }*/
 
-        // Interface olduğu için object tanımladık.
+        // Interface olduğu için object inner class tanımladık.
+
+
+        /**
+         * EDİTTEXT E GİRİLEN DEĞERİN KARAKTER SAYISI KONTROLÜ İÇİN KULLANILDI
+         */
         edittext_register_type.addTextChangedListener(object : TextWatcher {
 
 
@@ -117,9 +138,10 @@ class RegisterActivity : AppCompatActivity() {
         })
 
 
-        // İlgili Fragment ' ın kayıt yöntemine göre açılması
-        // Root mantığıyla gizle göster tekniği uygulandı.
-
+        /**
+         *  İlgili Fragment ' ın kayıt yöntemine göre açılması
+         *  Root mantığıyla gizle göster tekniği uygulandı.
+         */
 
         btn_next.setOnClickListener {
 
@@ -127,7 +149,11 @@ class RegisterActivity : AppCompatActivity() {
             if (edittext_register_type.hint.toString().equals("Telefon")) {
 
 
-                Toast.makeText(this@RegisterActivity,"Telefon Modülü Şimdilik Aktif Değil \n Lütfen E-Mail modülünü kullanınız",Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@RegisterActivity,
+                    "Telefon Modülü Şimdilik Aktif Değil \n Lütfen E-Mail modülünü kullanınız",
+                    Toast.LENGTH_LONG
+                ).show()
 
 
                 /*//Log.e("RegisterActivity","Telefon İleri tıklandı")
@@ -148,20 +174,73 @@ class RegisterActivity : AppCompatActivity() {
 
             } else {
 
-                //Log.e("RegisterActivity","E-Posta menüsü İleri tıklandı")
 
-                if(isValidEmailControl(edittext_register_type.text.toString())){
-                    constraint_login_root.visibility = View.GONE
-                    framelayout_login_root.visibility = View.VISIBLE
-                    val fragmentTransaction = supportFragmentManager.beginTransaction()
-                    fragmentTransaction.replace(R.id.framelayout_login_root, EmailRegisterFragment())
-                    fragmentTransaction.addToBackStack("EmailRegisterFragmentEklendi")
-                    fragmentTransaction.commit()
-                    EventBus.getDefault().postSticky(EventBusDataEvents.EmailGonder(edittext_register_type.text.toString()))
-                }else{
-                    Toast.makeText(this@RegisterActivity,"Geçerli e-mail adresi giriniz.",Toast.LENGTH_LONG).show()
+                /**
+                 * EMAIL GEÇERLİLİK KONTROLÜ
+                 */
+
+                if (isValidEmailControl(edittext_register_type.text.toString())) {
+
+
+                    var emailDbControl = false
+                    /**
+                     * EMAIL BİLGİLERİ KULLANIMDA MI DEĞİL Mİ KONTROLÜ
+                     */
+                    mRef.child("users").addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onCancelled(p0: DatabaseError) {
+
+                        }
+
+                        override fun onDataChange(p0: DataSnapshot) {
+
+                            if (p0.value != null) {
+
+
+                                for (user in p0.children) {
+
+                                    val readingUserInfo = user.getValue(User::class.java)
+
+                                    if (readingUserInfo?.userEmail.equals(edittext_register_type.text.toString())) {
+
+                                        emailDbControl = true // Kullanımda
+
+                                        toast("E-Mail Kullanımda")
+                                        break
+
+                                    }
+
+
+                                }
+
+                                /**
+                                 * EMAIL KULLANIMDA DEĞİLSE KULLANICI BİLGİLERİNİN İSTENDİĞİ EKRANA GEÇİŞ YAPILIYOR.
+                                 */
+                                if (emailDbControl == false) {
+
+                                    constraint_login_root.visibility = View.GONE
+                                    framelayout_login_root.visibility = View.VISIBLE
+                                    val fragmentTransaction = supportFragmentManager.beginTransaction()
+                                    fragmentTransaction.replace(R.id.framelayout_login_root, EmailRegisterFragment())
+                                    fragmentTransaction.addToBackStack("EmailRegisterFragmentEklendi")
+                                    fragmentTransaction.commit()
+                                    EventBus.getDefault()
+                                        .postSticky(EventBusDataEvents.EmailGonder(edittext_register_type.text.toString()))
+
+
+                                }
+
+
+                            }
+
+                        }
+
+
+                    })
+
+
+                } else {
+                    Toast.makeText(this@RegisterActivity, "Geçerli e-mail adresi giriniz.", Toast.LENGTH_LONG).show()
                 }
-
 
 
             }
@@ -172,26 +251,23 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
-
+    /**
+     * GERİ BUTONUNA BASILDIĞINDA TEKRAR GÖSTERİLMESİ İÇİN.
+     */
     override fun onBackPressed() {
-
 
         constraint_login_root.visibility = View.VISIBLE
         super.onBackPressed()
     }
 
-
-    fun isValidEmailControl(kontrolEdilecekEmail:String) : Boolean {
-
-        if(kontrolEdilecekEmail == null){
-            return false
-        }
+    /**
+     * EMAIL GEÇERLİLİK PATTERN I
+     */
+    fun isValidEmailControl(kontrolEdilecekEmail: String): Boolean {
 
         return android.util.Patterns.EMAIL_ADDRESS.matcher(kontrolEdilecekEmail).matches()
 
     }
-
-
 
 
 }
