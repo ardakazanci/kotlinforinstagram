@@ -11,34 +11,47 @@ package com.ardakazanci.instagramkotlin.profile
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.ardakazanci.instagramkotlin.R
+import com.ardakazanci.instagramkotlin.login.LoginActivity
 import com.ardakazanci.instagramkotlin.utils.BottomNavigationViewHelper
 import com.ardakazanci.instagramkotlin.utils.UniversalImageLoader
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_profile.*
 
 class ProfileActivity : AppCompatActivity() {
-
+    
+    
+    lateinit var mAuth: FirebaseAuth
+    lateinit var mAuthListener: FirebaseAuth.AuthStateListener
+    
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-
-
+    
+    
+    
+        mAuth = FirebaseAuth.getInstance()
+        setupAuthListener()
+       
+        
         setupToolbar()
-        setupBottomNavigationView()
         setupProfilePicture()
-
-
+        setupBottomNavigationView()
+    
+    
     }
 
     /**
      * Profil resmi eklenmektedir.
      */
     private fun setupProfilePicture() {
-
-        val pictureUrl = "photo.isu.pub/ardakazanci/photo_large.jpg"
-        UniversalImageLoader.setImage(pictureUrl,circleimageview_profile,progressbar_profile_picture,"http://")
+    
+        val pictureUrl = "gelecegiyazanlar.turkcell.com.tr/sites/default/files/pictures/picture-69869-1547309997.jpg"
+        UniversalImageLoader.setImage(pictureUrl, circleimageview_profile, progressbar_profile_picture, "https://")
 
     }
 
@@ -78,8 +91,54 @@ class ProfileActivity : AppCompatActivity() {
         val menuItem = menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)
     }
-
-
+    
+    override fun onStart() {
+        super.onStart()
+        mAuth.addAuthStateListener(mAuthListener)
+    }
+    
+    
+    override fun onStop() {
+        super.onStop()
+        mAuth.removeAuthStateListener(mAuthListener)
+    }
+    
+    
+    private fun setupAuthListener() {
+        
+        mAuthListener = object : FirebaseAuth.AuthStateListener {
+            override fun onAuthStateChanged(p0: FirebaseAuth) {
+                
+                
+                val user = FirebaseAuth.getInstance().currentUser
+                // Eğer auth olmadıysa yönlendirme yapıyoruz.
+                if (user == null) {
+                    
+                    Log.e(TAG, "User Auth null")
+                    
+                    val intent =
+                        Intent(
+                            this@ProfileActivity,
+                            LoginActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    startActivity(intent)
+                    finish() // geri dönüldüğünde gelmemesi için.
+                    
+                    
+                } else {
+                    
+                    
+                    Log.e("Çıkış Yapılamadı", " Null Değil")
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    
     /**
      * Sabitler
      */

@@ -54,10 +54,10 @@ class ProfileEditFragment : Fragment() {
 
 
     private fun setupProfilePicture() {
-
-
-        val imgUrl = "photo.isu.pub/ardakazanci/photo_large.jpg"
-        UniversalImageLoader.setImage(imgUrl, circleProfilePictureImageView, null, "https://")
+    
+    
+        val pictureUrl = "gelecegiyazanlar.turkcell.com.tr/sites/default/files/pictures/picture-69869-1547309997.jpg"
+        UniversalImageLoader.setImage(pictureUrl, circleProfilePictureImageView, null, "https://")
 
 
     }

@@ -8,20 +8,41 @@
 
 package com.ardakazanci.instagramkotlin.search
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.ardakazanci.instagramkotlin.R
+import com.ardakazanci.instagramkotlin.login.LoginActivity
 import com.ardakazanci.instagramkotlin.utils.BottomNavigationViewHelper
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_home.*
 
 class SearchActivity : AppCompatActivity() {
-
+    
+    lateinit var mAuth: FirebaseAuth
+    lateinit var mAuthListener: FirebaseAuth.AuthStateListener
+    
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-
+    
+    
+        setupAuthListener()
+        mAuth = FirebaseAuth.getInstance()
         setupBottomNavigationView()
 
+    }
+    
+    override fun onStart() {
+        super.onStart()
+        mAuth.addAuthStateListener(mAuthListener)
+    }
+    
+    
+    override fun onStop() {
+        super.onStop()
+        mAuth.removeAuthStateListener(mAuthListener)
     }
 
     fun setupBottomNavigationView() {
@@ -32,8 +53,37 @@ class SearchActivity : AppCompatActivity() {
         val menuItem = menu.getItem(ACTIVITY_NO)
         menuItem.setChecked(true)
     }
-
-
+    
+    
+    private fun setupAuthListener() {
+        
+        mAuthListener = object : FirebaseAuth.AuthStateListener {
+            override fun onAuthStateChanged(p0: FirebaseAuth) {
+                
+                //
+                val user = FirebaseAuth.getInstance().currentUser
+                // Eğer auth olmadıysa yönlendirme yapıyoruz.
+                if (user == null) {
+                    
+                    val intent =
+                        Intent(
+                            this@SearchActivity,
+                            LoginActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    startActivity(intent)
+                    finish() // geri dönüldüğünde gelmemesi için.
+                    
+                    
+                } else {
+                
+                }
+                
+            }
+            
+        }
+        
+    }
+    
 
     /**
      * Sabitler

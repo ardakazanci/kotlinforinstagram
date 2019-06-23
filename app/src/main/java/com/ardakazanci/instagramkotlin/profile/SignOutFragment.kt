@@ -9,24 +9,56 @@
 package com.ardakazanci.instagramkotlin.profile
 
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 
 import com.ardakazanci.instagramkotlin.R
+import com.google.firebase.auth.FirebaseAuth
 
 
-class SignOutFragment : Fragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_out, container, false)
+class SignOutFragment : DialogFragment() {
+    
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        
+        val alert = AlertDialog.Builder(this.activity)
+            .setTitle("Instagram Çıkış Yap")
+            .setMessage("Emin misiniz?")
+            .setPositiveButton("Çıkış Yap", object : DialogInterface.OnClickListener {
+                override fun onClick(p0: DialogInterface?, p1: Int) {
+                    
+                    
+                    FirebaseAuth.getInstance().signOut()
+                    activity?.finish() // Çıkış yaptıktan sonra kapanacak.
+                    
+                    
+                }
+                
+                
+            })
+            
+            .setNegativeButton("İptal", object : DialogInterface.OnClickListener {
+                
+                override fun onClick(p0: DialogInterface?, p1: Int) {
+                    
+                    dismiss() // pencereyi kapatır.
+                    
+                }
+                
+                
+            }).create()
+        
+        
+        return alert
+        
+        
+        return super.onCreateDialog(savedInstanceState)
     }
-
 
 }

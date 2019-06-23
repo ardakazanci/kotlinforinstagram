@@ -28,8 +28,8 @@ class ProfileSettingsActivity : AppCompatActivity() {
         setupToolbar()
         fragmentNavigations()
     }
-
-
+    
+    
     /**
      * SettingsActivity içerisinde yer alan menüler için özel Fragment gösterilecek
      * Bu işlemi bu metot aracılığıyla geçişlerini ele alacağız.
@@ -45,13 +45,16 @@ class ProfileSettingsActivity : AppCompatActivity() {
 
 
         }
-
+        
+        
         textview_accounts_settings_sign_out.setOnClickListener {
-            constraintlayout_settings_profile_root.visibility = View.GONE
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.constraintlayout_settings_profile_root,SignOutFragment())
-            transaction.addToBackStack("signoutFragmentEklendi")
-            transaction.commit()
+            
+            
+            val dialog = SignOutFragment()
+            
+            dialog.show(supportFragmentManager, "Çıkış Yap Dialog Göster")
+            
+            
 
 
         }
