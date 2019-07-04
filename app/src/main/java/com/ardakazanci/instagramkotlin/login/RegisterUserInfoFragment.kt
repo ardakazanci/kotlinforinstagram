@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat
 import org.jetbrains.anko.toast
 import com.ardakazanci.instagramkotlin.R
 import com.ardakazanci.instagramkotlin.model.User
+import com.ardakazanci.instagramkotlin.model.UserDetails
 import com.ardakazanci.instagramkotlin.utils.EventBusDataEvents
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
@@ -42,7 +43,7 @@ class EmailRegisterFragment : Fragment() {
      * edittext_kayit_kullaniciadi
      * button_kayit_aksiyon
      */
-
+    
     /**
      * ///////////// GLOBAL DEĞERLER /////////////
      */
@@ -134,8 +135,13 @@ class EmailRegisterFragment : Fragment() {
                                         //activity?.toast("Auth İşlemi Başarılı")
                                         val userUId =
                                             mAuth.currentUser!!.uid.toString() // Oturum açıldıktan sonra aldık.
+    
+                                        val userRegisteringUserDetails = UserDetails("0", "0", "0", "", "", "")
+                                        
+                                        
                                         val registerUser =
                                             User(
+                                                userRegisteringUserDetails,
                                                 "",
                                                 userUId,
                                                 getUserEmailAdress,
