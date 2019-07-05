@@ -105,7 +105,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvFotografiDegistir"
+                android:id="@+id/textview_profilesettings_picturechange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -129,7 +129,7 @@
                 android:text="Ad"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvFotografiDegistir" />
+                app:layout_constraintTop_toBottomOf="@+id/textview_profilesettings_picturechange"/>
 
             <EditText
                 android:id="@+id/edittext_profilesettings_name"
@@ -250,7 +250,8 @@
                 app:layout_constraintEnd_toEndOf="@+id/circleimageview_profilesettings_profilepicture"
                 android:layout_marginTop="8dp"
                 app:layout_constraintTop_toTopOf="@+id/circleimageview_profilesettings_profilepicture"
-                android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/tvFotografiDegistir"/>
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/textview_profilesettings_picturechange"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
