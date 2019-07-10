@@ -11,7 +11,9 @@ package com.ardakazanci.instagramkotlin.profile
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +25,16 @@ import com.ardakazanci.instagramkotlin.R
 import com.ardakazanci.instagramkotlin.model.User
 import com.ardakazanci.instagramkotlin.utils.EventBusDataEvents
 import com.ardakazanci.instagramkotlin.utils.UniversalImageLoader
+import com.google.android.gms.auth.api.signin.internal.Storage
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_profile_edit.*
 import kotlinx.android.synthetic.main.fragment_profile_edit.view.*
@@ -31,6 +42,8 @@ import kotlinx.android.synthetic.main.fragment_profile_edit.view.circleimageview
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.toast
+import java.lang.Exception
+import java.net.URL
 
 
 class ProfileEditFragment : Fragment() {
@@ -39,6 +52,11 @@ class ProfileEditFragment : Fragment() {
     lateinit var getUserInfo: User
     
     lateinit var mDatabaseRef: DatabaseReference
+    lateinit var mStorageRef: StorageReference
+    
+    
+    // Seçilen fotoğraf uri'si burada tutulacak
+    var profilePictureSelectedUri: Uri? = null
     
     
     val ACTION_PICK = 1000
@@ -53,6 +71,7 @@ class ProfileEditFragment : Fragment() {
     
     
         mDatabaseRef = FirebaseDatabase.getInstance().reference
+        mStorageRef = FirebaseStorage.getInstance().reference
         
         
         
@@ -71,6 +90,8 @@ class ProfileEditFragment : Fragment() {
     
         v.imageview_profileedit_save.setOnClickListener {
         
+            var profileUpdateController = false
+            
             // Eğer ad-soyad değişmişse
         
             if (getUserInfo.userPersonelName!! != v.edittext_profilesettings_name.text.toString()) {
@@ -78,7 +99,8 @@ class ProfileEditFragment : Fragment() {
                 // Kayıt işlemi
                 mDatabaseRef.child("users").child(getUserInfo.userUID!!).child("userPersonelName")
                     .setValue(v.edittext_profilesettings_name.text.toString())
-            
+                profileUpdateController = true
+                
             }
         
         
@@ -89,7 +111,8 @@ class ProfileEditFragment : Fragment() {
                 // Kayıt işlemi
                 mDatabaseRef.child("users").child(getUserInfo.userUID!!).child("userDetails").child("userBiography")
                     .setValue(v.edittext_profilesettings_biography.text.toString())
-            
+                profileUpdateController = true
+                
             }
         
         
@@ -100,84 +123,137 @@ class ProfileEditFragment : Fragment() {
                 // Kayıt işlemi
                 mDatabaseRef.child("users").child(getUserInfo.userUID!!).child("userDetails").child("userWebsite")
                     .setValue(v.edittext_profilesettings_website.text.toString())
-            
+                profileUpdateController = true
+                
             }
         
-        
+            // Eğer Kullanıcı adı değiştirilmiş ve değiştirilen kullanıcı adının benzeri yok ise yapılacak işlemler.
             if (getUserInfo.userUserName != v.edittext_profilesettings_username.text.toString()) {
-            
+    
                 mDatabaseRef.child("users").orderByChild("userUserName")
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onCancelled(p0: DatabaseError) {
                         
                         }
-                    
-                    
+    
+    
                         override fun onDataChange(p0: DataSnapshot) {
-                        
+        
                             var userNameUsedControl = false
-                        
-                        
+        
+        
                             for (ds in p0.children) {
-                            
+            
                                 val readingUserNameControl = ds!!.getValue(User::class.java)!!.userUserName
-                            
-                            
+            
+            
                                 if (readingUserNameControl!! == v.edittext_profilesettings_username.text.toString()) {
-                                
+                
                                     Toast.makeText(activity, "Kullanıcı adı kullanımda", Toast.LENGTH_LONG).show()
                                     userNameUsedControl = true
                                     break
-                                
+                
                                 }
-                            
-                            
+            
+            
                             }
-                        
-                        
+        
+        
                             if (!userNameUsedControl) {
-                            
+            
                                 mDatabaseRef.child("users").child(getUserInfo.userUID!!).child("userUserName")
                                     .setValue(v.edittext_profilesettings_username.text.toString())
+                                profileUpdateController = true
                             }
-                        
-                        
+        
+        
                         }
-                    
-                    
+    
+    
                     })
-            
+    
+    
             }
         
+            // Eğer kullanıcı fotoğraf seçtiyse kontrolü sağlıyoruz.
+            if (profilePictureSelectedUri != null) {
+            
+                // FOTOĞRAF YÜKLEME FONKSİYON
+            
+                val dialogPictureFragmentProgressFragment = PictureUploadProgressDFragment()
+            
+                dialogPictureFragmentProgressFragment.show(
+                    activity!!.supportFragmentManager,
+                    "YukleniyorFragmentPictureProgress"
+                )
+            
+            
+            
+            
+                mStorageRef.child("users").child(getUserInfo.userUID!!)
+                    .child(profilePictureSelectedUri!!.lastPathSegment!!)
+                    .putFile(profilePictureSelectedUri!!)
+                    .addOnSuccessListener { itUploadTask ->
+                        itUploadTask?.storage?.downloadUrl?.addOnSuccessListener { itUri ->
+                            val downloadUrl: String = itUri.toString()
+                            mDatabaseRef.child("users").child(getUserInfo.userUID!!)
+                                .child("userDetails")
+                                .child("userProfilePicture")
+                                .setValue(downloadUrl).addOnCompleteListener { itTask ->
+                                    if (itTask.isSuccessful) {
+                                        profileUpdateController = true
+                                        dialogPictureFragmentProgressFragment.dismiss()
+                                        mStorageRef.downloadUrl
+                                    } else {
+                                        val message = itTask.exception?.message
+                                        Toast.makeText(
+                                            activity!!,
+                                            "Error Occured..." + message,
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+                        }
+                    }
+            
+            
+            }
+            
+            
             // İF BLOGU SON
         
-            //Toast.makeText(activity, "Kullanıcı bilgileri güncellendi", Toast.LENGTH_LONG).show()
         
         
         
+            if (profileUpdateController) {
+                Toast.makeText(activity, "Kullanıcı bilgileri güncellendi", Toast.LENGTH_LONG).show()
+            }
+            
+            
         }
         
         
         v.imageview_profileedit_close.setOnClickListener {
-    
             activity?.onBackPressed()
-    
         }
+    
     
     
         return v
     }
     
-    
+    // FOTOĞRAF SEÇİM İŞLEMİ
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         
         if (requestCode == ACTION_PICK && resultCode == AppCompatActivity.RESULT_OK && data!!.data != null) {
-            
-            
-            val userImageUri = data.data
-            
-            circleimageview_profilesettings_profilepicture.setImageURI(userImageUri)
+    
+            // Seçilen fotoğraf uri'si
+            profilePictureSelectedUri = data.data
+    
+    
+    
+            circleimageview_profilesettings_profilepicture.setImageURI(profilePictureSelectedUri)
             
         }
     }

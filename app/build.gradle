@@ -62,6 +62,8 @@ dependencies {
     implementation "org.jetbrains.anko:anko-commons:$anko_ver"
     implementation "org.jetbrains.anko:anko-design:$anko_ver" // For SnackBars
 
+    // FirebaseStorage
+    implementation "com.google.firebase:firebase-storage:$firabase_storage"
 
 
 }

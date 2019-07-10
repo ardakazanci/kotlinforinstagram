@@ -16,10 +16,11 @@ buildscript {
     ext.eventbus = "3.1.1"
     ext.googleservices = "4.2.0"
     ext.gradleversion = "3.4.1"
-    ext.firebasecore = "16.0.9"
+    ext.firebasecore = "17.0.0"
     ext.firebaseauth = "18.0.0"
-    ext.firebasedatabase = "17.0.0"
+    ext.firebasedatabase = "18.0.0"
     ext.anko_ver = "0.10.8"
+    ext.firabase_storage = "18.0.0"
 
 
 
